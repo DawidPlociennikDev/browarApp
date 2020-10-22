@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      BrowarApp
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header class="header">
+      <div class="avatar-box">
+        <img src="{{avatar}}" alt="avatar" class="avatar">
+      </div>
+      <div class="welcome">
+        Witaj <strong>{{firstName}}</strong>!
+      </div>
+  </ion-header>
+  <div id="container">
+    <div class="boxes">
+      <div class="box shadow" (click)="goToPage('create-meeting')">
+        Create Meeting
+        <ion-icon name="create-outline" class="box-icon"></ion-icon>
+      </div>
+      <div class="box shadow" (click)="goToPage('joi-meeting')">
+        Join Meeting
+        <ion-icon name="enter-outline" class="box-icon"></ion-icon>
+      </div>
+    </div>
+  </div>
+</ion-content>
