@@ -29,5 +29,6 @@ npm-debug.log*
 /platforms
 /plugins
 /www
+/src/environments
 
 /key_app
