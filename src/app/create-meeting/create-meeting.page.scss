@@ -4,8 +4,8 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 60%;
-  transform: translateY(-60%);
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 #container strong {
@@ -16,12 +16,50 @@
 #container p {
   font-size: 16px;
   line-height: 22px;
-
   color: #8c8c8c;
-
   margin: 0;
 }
 
 #container a {
   text-decoration: none;
+}
+
+.hide_border {
+    --border-style: none;
+    margin-bottom: 0px;
+}
+
+.input_item {
+    margin-bottom: 20px;
+    .change_photo {
+        display: inline-block;
+        position: relative;
+        margin-bottom: 20px;
+        .logo_event {
+            border-radius: 100%;
+        }
+        .logo_edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            font-size: 1.6rem;
+            border-radius: 15px;
+            padding: 5px;
+            background: rgba(255,255,255,.9);
+        }
+    }
+
+    .input_file {
+        display: none;
+    }
+}
+
+.status {
+  margin-bottom: 30px;
+  color: #f00;
+}
+
+.submit_btn {
+  margin: 0 auto;
+  width: 90%;
 }

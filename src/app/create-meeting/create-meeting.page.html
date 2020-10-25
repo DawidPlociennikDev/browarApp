@@ -1,5 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>
       BrowarApp
     </ion-title>
@@ -8,6 +11,36 @@
 
 <ion-content [fullscreen]="true">
   <div id="container">
-
+    <div class="status">
+      {{status}}
+    </div>
+    <ion-item class="input_item hide_border">
+      <label style="margin: 0 auto;">
+        <div class="change_photo">
+          <img [src]="avatar" alt="" width="110" height="110" class="logo_event shadow">
+          <ion-icon name="camera-reverse-outline" class="logo_edit shadow"></ion-icon>
+        </div>
+        <input type="file" class="input_file" (change)="uploadPhoto($event)">
+      </label>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label position="floating">Name event</ion-label>
+      <ion-input [(ngModel)]="name"></ion-input>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label position="floating">Date start</ion-label>
+      <ion-datetime [(ngModel)]="date" [min]="minDate" displayFormat="DD MMM, YYYY"></ion-datetime>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label position="floating">Hours start</ion-label>
+      <ion-datetime [(ngModel)]="hour" display-format="HH:mm" picker-format="HH:mm"></ion-datetime>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label position="floating">Exact address</ion-label>
+      <ion-input [(ngModel)]="address"></ion-input>
+    </ion-item>
+    <div class="submit_btn">
+      <ion-button expand="block" shape="round" (click)="addEvent()">Create meeting</ion-button>
+    </div>
   </div>
 </ion-content>

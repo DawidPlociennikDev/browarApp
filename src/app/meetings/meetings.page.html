@@ -1,0 +1,56 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      BrowarApp
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <ion-list>
+      <ion-list-header>
+        <ion-select [(ngModel)]="selected" interface="action-sheet" class="custom-select">
+          <ion-select-option [value]="0">Your created events</ion-select-option>
+          <ion-select-option [value]="1">Your joined events</ion-select-option>
+        </ion-select>
+      </ion-list-header>
+      
+      <div *ngIf="selected == 0">
+        <div class="status">
+          {{status}}
+        </div>
+        <ion-item *ngFor="let item of events | async">
+          <ion-avatar slot="start">
+            <img [src]="item.avatar">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ item.name }}</h2>
+            <p (click)="copyCode(item.code)">{{ item.code }} <ion-icon name="copy-outline"></ion-icon></p>
+            <h4>{{ item.address }}<br>{{ item.hour | date: "H:mm" }}, {{ item.date | date: "dd MMM YYYY" }}</h4>
+          </ion-label>
+        </ion-item>
+      </div>
+
+      <div *ngIf="selected == 1">
+        <div class="status">
+          {{status2}}
+        </div>
+        <ion-item *ngFor="let item of events | async">
+          <ion-avatar slot="start">
+            <img [src]="item.avatar">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ item.name }}</h2>
+            <p (click)="copyCode(item.code)">{{ item.code }} <ion-icon name="copy-outline"></ion-icon></p>
+            <h4>{{ item.address }}<br>{{ item.hour | date: "H:mm" }}, {{ item.date | date: "dd MMM YYYY" }}</h4>
+          </ion-label>
+        </ion-item>
+      </div>
+
+    </ion-list>
+  </div>
+</ion-content>

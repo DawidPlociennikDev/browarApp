@@ -42,10 +42,6 @@
   font-size: 1.3rem;
 }
 
-.shadow {
- box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
-}
-
 .boxes {
   margin: 0 auto;
   width: 60%;
@@ -57,7 +53,7 @@
     height: 150px;
     width: 100%;
     border-radius: 15px;
-    background-color: red;
+    background-color: #3880ff;
     color: #fff;
     text-transform: uppercase;
   }
@@ -68,4 +64,17 @@
     font-size: 3rem;
     color: #e2e2e2;
   }
+}
+
+.arrow {
+    position: absolute;
+    top: calc(50% - 3rem);
+    font-size: 6rem;
+    color: rgba(0,0,0,.05);
+}
+.arrow-left {
+  left: -1rem;
+}
+.arrow-right {
+  right: -1rem;
 }

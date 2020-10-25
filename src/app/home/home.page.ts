@@ -25,6 +25,7 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     if (
+      localStorage.getItem('userId') != null &&
       localStorage.getItem('email') != null &&
       localStorage.getItem('firstName') != null &&
       localStorage.getItem('lastName') != null &&
@@ -63,6 +64,7 @@ export class HomePage implements OnInit {
         avatar: success.additionalUserInfo.profile['picture'].data.url,
         timestamp:  firebase.firestore.FieldValue.serverTimestamp(),
       }).then(() => {
+        localStorage.setItem('userId', success.user.uid);
         localStorage.setItem('email', success.additionalUserInfo.profile['email']);
         localStorage.setItem('firstName', success.additionalUserInfo.profile['first_name']);
         localStorage.setItem('lastName', success.additionalUserInfo.profile['last_name']);

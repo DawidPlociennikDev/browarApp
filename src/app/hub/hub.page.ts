@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HelpersService } from '../services/helpers.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-hub',
@@ -11,7 +12,8 @@ export class HubPage implements OnInit {
   firstName: string;
   lastName: string;
   constructor(
-    public help: HelpersService
+    public help: HelpersService,
+    public alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -24,4 +26,25 @@ export class HubPage implements OnInit {
     this.help.nav(page);
   }
 
+  async logOut() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Logout',
+      message: 'Are you sure want logout?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }, {
+          text: 'Okay',
+          handler: () => {
+            localStorage.clear();
+            this.help.nav('home');
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
 }
