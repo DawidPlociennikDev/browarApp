@@ -56,24 +56,35 @@ export class CreateMeetingPage implements OnInit {
   addEvent() {
     if (this.validFields() === true) {
       this.help.presentLoading();
-      const randomCode = Math.floor(Math.random() * 99999999 + 10000000);
-      const time = firebase.firestore.FieldValue.serverTimestamp();
-      this.fs.collection('events').add({
-        id: Md5.hashStr(time + '|' + this.name + '|' + localStorage.getItem('userId')),
-        userId: localStorage.getItem('userId'),
-        name: this.name,
-        date: this.date,
-        hour: this.hour,
-        address: this.address,
-        avatar: this.avatar,
-        code: randomCode,
-        timestamp: time
-      }).then(() => {
-        this.help.dismissLoading();
-        this.help.toastInfo('Event was created');
-        this.help.nav('hub');
-      }).catch((error) => {
-        this.status = JSON.stringify(error);
+      const randomCode = Math.floor(Math.random() * 99999999 + 10000000).toString();
+      const checkCode = this.fs.collection('events', ref => ref.where('code', '==', randomCode))
+        .valueChanges()
+        .subscribe(async (data) => {
+        if (data.length <= 0) {
+          checkCode.unsubscribe();
+          const time = firebase.firestore.FieldValue.serverTimestamp();
+          this.fs.collection('events').add({
+            id: Md5.hashStr(time + '|' + this.name + '|' + localStorage.getItem('userId')),
+            userId: localStorage.getItem('userId'),
+            name: this.name,
+            date: this.date,
+            hour: this.hour,
+            address: this.address,
+            avatar: this.avatar,
+            code: randomCode,
+            timestamp: time
+          }).then(() => {
+            this.help.dismissLoading();
+            this.help.toastInfo('Event was created');
+            this.help.nav('hub');
+          }).catch((error) => {
+            this.status = JSON.stringify(error);
+          });
+        } else {
+          checkCode.unsubscribe();
+          this.help.dismissLoading();
+          this.addEvent();
+        }
       });
     } else {
       this.status = 'All fields are required';

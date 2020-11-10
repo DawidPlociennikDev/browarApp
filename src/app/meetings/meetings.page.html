@@ -30,7 +30,7 @@
           <ion-label>
             <h2>{{ item.name }}</h2>
             <p (click)="copyCode(item.code)">{{ item.code }} <ion-icon name="copy-outline"></ion-icon></p>
-            <h4>{{ item.address }}<br>{{ item.hour | date: "H:mm" }}, {{ item.date | date: "dd MMM YYYY" }}</h4>
+            <h4>{{ item.address }}<br>{{ item.hour | date: "H:mm" }}, {{ item.date | date: "dd MMM yyyy" }}</h4>
           </ion-label>
         </ion-item>
       </div>
@@ -39,14 +39,15 @@
         <div class="status">
           {{status2}}
         </div>
-        <ion-item *ngFor="let item of events | async">
+        <ion-item *ngFor="let item of joinedEventsArray">
           <ion-avatar slot="start">
             <img [src]="item.avatar">
           </ion-avatar>
           <ion-label>
             <h2>{{ item.name }}</h2>
-            <p (click)="copyCode(item.code)">{{ item.code }} <ion-icon name="copy-outline"></ion-icon></p>
-            <h4>{{ item.address }}<br>{{ item.hour | date: "H:mm" }}, {{ item.date | date: "dd MMM YYYY" }}</h4>
+            <p (click)="copyCode(item.code)">{{ item.code }} <ion-icon name="copy-outline"></ion-icon>
+            </p>
+            <h4>{{ item.address }}<br>{{ item.hour | date: "H:mm" }}, {{ item.date | date: "dd MMM yyyy" }}</h4>
           </ion-label>
         </ion-item>
       </div>

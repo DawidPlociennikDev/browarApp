@@ -21,7 +21,7 @@ export class HelpersService {
   async presentLoading() {
     this.loading = await this.loadingController.create({
       message: 'Please wait...',
-      duration: 10000
+      duration: 3000
     });
     await this.loading.present();
   }

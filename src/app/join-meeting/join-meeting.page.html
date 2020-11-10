@@ -16,10 +16,10 @@
     </div>
     <ion-item class="input_item">
       <ion-label position="floating">Code event</ion-label>
-      <ion-input type="text" mask="99999999" [(ngModel)]="code" class="code"></ion-input>
+      <ion-input type="text" mask="99999999" [(ngModel)]="code" class="code" (ionInput)="getCode($event)"></ion-input>
     </ion-item>
     <div class="submit_btn">
-      <ion-button expand="block" shape="round" (click)="joinMeeting()">Join meeting</ion-button>
+      <ion-button expand="block" shape="round" (click)="checkCode()" [disabled]="!isenabled">Join meeting</ion-button>
     </div>
   </div>
 </ion-content>
