@@ -2,17 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
-import * as firebase from 'firebase';
+import { ActivatedRoute } from '@angular/router';
 import { HelpersService } from '../services/helpers.service';
-import { Md5 } from 'ts-md5/dist/md5';
 import { File } from '@ionic-native/file/ngx';
 
 @Component({
-  selector: 'app-create-meeting',
-  templateUrl: './create-meeting.page.html',
-  styleUrls: ['./create-meeting.page.scss'],
+  selector: 'app-edit-meeting',
+  templateUrl: './edit-meeting.page.html',
+  styleUrls: ['./edit-meeting.page.scss'],
 })
-export class CreateMeetingPage implements OnInit {
+export class EditMeetingPage implements OnInit {
 
   status: string;
   avatar: string;
@@ -21,6 +20,7 @@ export class CreateMeetingPage implements OnInit {
   hour: string;
   address: string;
   minDate: any;
+  meetingId: string;
 
   constructor(
     private datePipe: DatePipe,
@@ -28,16 +28,24 @@ export class CreateMeetingPage implements OnInit {
     private storage: AngularFireStorage,
     public help: HelpersService,
     private file: File,
-  ) { }
+    private route: ActivatedRoute,
+  ) {
+    this.meetingId = this.route.snapshot.paramMap.get('meetingId');
+  }
 
   ngOnInit() {
     this.status = '';
-    this.avatar = 'https://firebasestorage.googleapis.com/v0/b/browarapp.appspot.com/o/example_beer.jpg?alt=media&token=88798838-5ad4-4980-bae3-5c9d4f4ba714';
     this.minDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
-    this.name = '';
-    this.date = '';
-    this.hour = '';
-    this.address = '';
+    const getData = this.fs.collection('events', ref => ref.where('id', '==', this.meetingId))
+      .valueChanges()
+      .subscribe((data) => {
+        this.name = data[0]['name'];
+        this.date = data[0]['date'];
+        this.hour = data[0]['hour'];
+        this.address = data[0]['address'];
+        this.avatar = data[0]['avatar'];
+        getData.unsubscribe();
+      });
   }
 
   validFields() {
@@ -53,39 +61,20 @@ export class CreateMeetingPage implements OnInit {
     }
   }
 
-  addEvent() {
+  editEvent() {
     if (this.validFields() === true) {
       this.help.presentLoading();
-      const randomCode = Math.floor(Math.random() * 99999999 + 10000000).toString();
-      const checkCode = this.fs.collection('events', ref => ref.where('code', '==', randomCode))
-        .valueChanges()
-        .subscribe(async (data) => {
-        if (data.length <= 0) {
-          checkCode.unsubscribe();
-          const time = firebase.firestore.FieldValue.serverTimestamp();
-          const docId = Md5.hashStr(time + '|' + this.name + '|' + localStorage.getItem('userId')).toString();
-          this.fs.collection('events').doc(docId).set({
-            id: docId,
-            userId: localStorage.getItem('userId'),
-            name: this.name,
-            date: this.date,
-            hour: this.hour,
-            address: this.address,
-            avatar: this.avatar,
-            code: randomCode,
-            timestamp: time
-          }).then(() => {
-            this.help.dismissLoading();
-            this.help.toastInfo('Event was created');
-            this.help.nav('hub');
-          }).catch((error) => {
-            this.status = JSON.stringify(error);
-          });
-        } else {
-          checkCode.unsubscribe();
-          this.help.dismissLoading();
-          this.addEvent();
-        }
+      this.fs.collection('events').doc(this.meetingId).update({
+        name: this.name,
+        date: this.date,
+        hour: this.hour,
+        address: this.address,
+        avatar: this.avatar,
+      }).then(() => {
+        this.help.dismissLoading();
+        this.help.toastInfo('Event was updated');
+      }).catch((error) => {
+        this.status = JSON.stringify(error);
       });
     } else {
       this.status = 'All fields are required';
@@ -109,5 +98,4 @@ export class CreateMeetingPage implements OnInit {
       this.status = 'This file is not a image!';
     }
   }
-
 }
