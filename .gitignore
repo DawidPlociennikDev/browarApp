@@ -35,5 +35,8 @@ src/environments/environment.prod.ts
 /src/environments
 /src/environments/environment.ts
 /src/environments/environment.prod.ts
-
+environment.ts
+environment.prod.ts
+/environment.ts
+/environment.prod.ts
 /key_app
