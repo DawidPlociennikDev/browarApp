@@ -27,6 +27,14 @@ const routes: Routes = [
     path: 'join-meeting',
     loadChildren: () => import('./join-meeting/join-meeting.module').then( m => m.JoinMeetingPageModule)
   },
+  {
+    path: 'edit-meeting/:meetingId',
+    loadChildren: () => import('./edit-meeting/edit-meeting.module').then( m => m.EditMeetingPageModule)
+  },
+  {
+    path: 'event/:meetingId',
+    loadChildren: () => import('./event/event.module').then( m => m.EventPageModule)
+  },
 ];
 
 @NgModule({

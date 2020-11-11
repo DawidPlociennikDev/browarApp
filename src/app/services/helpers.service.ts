@@ -27,7 +27,9 @@ export class HelpersService {
   }
 
   async dismissLoading() {
-    await this.loading.dismiss();
+    if (this.loading) {
+      await this.loading.dismiss();
+    }
   }
 
   async toastInfo(content) {

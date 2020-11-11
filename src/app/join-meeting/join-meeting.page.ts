@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HelpersService } from '../services/helpers.service';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AlertController } from '@ionic/angular';
-import { LoadingController } from '@ionic/angular';
 import { Md5 } from 'ts-md5/dist/md5';
 import * as firebase from 'firebase';
 
@@ -21,7 +20,6 @@ export class JoinMeetingPage implements OnInit {
     public help: HelpersService,
     private fs: AngularFirestore,
     public alertController: AlertController,
-    public loadingController: LoadingController
   ) { }
 
   ngOnInit() {
@@ -77,8 +75,9 @@ export class JoinMeetingPage implements OnInit {
 
   joinMeeting(meetingId, code) {
     const time = firebase.firestore.FieldValue.serverTimestamp();
-    this.fs.collection('events-members').add({
-      id: Md5.hashStr(time + '|' + meetingId + '|' + localStorage.getItem('userId')),
+    const docId = Md5.hashStr(time + '|' + meetingId + '|' + localStorage.getItem('userId')).toString();
+    this.fs.collection('events-members').doc(docId).set({
+      id: docId,
       userId: localStorage.getItem('userId'),
       meetingId: meetingId,
       firstName: localStorage.getItem('firstName'),

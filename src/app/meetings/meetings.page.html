@@ -18,40 +18,64 @@
           <ion-select-option [value]="1">Your joined events</ion-select-option>
         </ion-select>
       </ion-list-header>
-      
       <div *ngIf="selected == 0">
         <div class="status">
           {{status}}
         </div>
-        <ion-item *ngFor="let item of events | async">
-          <ion-avatar slot="start">
-            <img [src]="item.avatar">
-          </ion-avatar>
-          <ion-label>
-            <h2>{{ item.name }}</h2>
-            <p (click)="copyCode(item.code)">{{ item.code }} <ion-icon name="copy-outline"></ion-icon></p>
-            <h4>{{ item.address }}<br>{{ item.hour | date: "H:mm" }}, {{ item.date | date: "dd MMM yyyy" }}</h4>
-          </ion-label>
-        </ion-item>
+        <ion-item-sliding *ngFor="let item of events | async; let i = index" #slideList>
+          <ion-item>
+            <ion-avatar slot="start" (click)="goToEvent(item.id)">
+              <img [src]="item.avatar">
+            </ion-avatar>
+            <ion-label>
+              <h2 (click)="goToEvent(item.id)">{{ item.name }}</h2>
+              <p>{{ item.code }} <ion-icon name="copy-outline" (click)="copyCode(item.code)"></ion-icon></p>
+              <h4 (click)="goToEvent(item.id)">{{ item.address }}<br>{{ item.hour | date: "H:mm" }}, {{ item.date | date: "dd MMM yyyy" }}</h4>
+            </ion-label>
+          </ion-item>
+          <ion-item-options>
+            <ion-item-option color="primary" (click)="editMeeting(item.id)">
+              <ion-icon slot="top" name="create-sharp" class="mx"></ion-icon>
+              Edit
+            </ion-item-option>
+            <ion-item-option color="danger" (click)="deleteMeeting(item.id)">
+              <ion-icon slot="top" name="trash-bin-sharp"></ion-icon>
+              Delete
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
       </div>
 
       <div *ngIf="selected == 1">
         <div class="status">
           {{status2}}
         </div>
-        <ion-item *ngFor="let item of joinedEventsArray">
-          <ion-avatar slot="start">
-            <img [src]="item.avatar">
-          </ion-avatar>
-          <ion-label>
-            <h2>{{ item.name }}</h2>
-            <p (click)="copyCode(item.code)">{{ item.code }} <ion-icon name="copy-outline"></ion-icon>
-            </p>
-            <h4>{{ item.address }}<br>{{ item.hour | date: "H:mm" }}, {{ item.date | date: "dd MMM yyyy" }}</h4>
-          </ion-label>
-        </ion-item>
+
+
+        <ion-item-sliding *ngFor="let item of joinedEventsArray">
+          <ion-item>
+            <ion-avatar slot="start">
+              <img [src]="item.avatar">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{ item.name }}</h2>
+              <p (click)="copyCode(item.code)">{{ item.code }} <ion-icon name="copy-outline"></ion-icon>
+              </p>
+              <h4>{{ item.address }}<br>{{ item.hour | date: "H:mm" }}, {{ item.date | date: "dd MMM yyyy" }}</h4>
+            </ion-label>
+          </ion-item>
+          <ion-item-options>
+            <ion-item-option color="warning" (click)="leaveMeeting(item.id)">
+              <ion-icon slot="top" name="log-out-sharp"></ion-icon>
+              Leave
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+
+
       </div>
 
     </ion-list>
+
   </div>
 </ion-content>

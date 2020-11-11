@@ -4,6 +4,8 @@
   position: absolute;
   left: 0;
   right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 #container strong {
@@ -24,15 +26,17 @@
   text-decoration: none;
 }
 
-.status {
-    margin: 30px auto;
-}
-
-.custom-select {
-    width: 80%;
-    text-align: left;
-}
-
-.mx {
-  margin: 0 13px 0 13px;
+.header {
+    display: flex;
+    padding: 20px 10px 0 20px;
+    .avatar {
+        border-radius: 100%;
+        width: 100px;
+    }
+    .event-box {
+        margin-left: 10px;
+        h4 {
+            margin-top: 0;
+        }
+    }
 }

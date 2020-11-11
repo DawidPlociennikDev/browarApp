@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { HelpersService } from '../services/helpers.service';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { AlertController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-meetings',
@@ -19,10 +22,17 @@ export class MeetingsPage implements OnInit {
   subJoinedEvents: any;
   selected: number;
 
+  subDelete: any;
+  subJoined: any;
+
+  @ViewChild('slideList', {read: ElementRef}) slide: ElementRef;
+
   constructor(
     private fs: AngularFirestore,
     public help: HelpersService,
     private clipboard: Clipboard,
+    public alertController: AlertController,
+    public navCtrl: NavController,
   ) {
     this.selected = 0;
   }
@@ -39,9 +49,17 @@ export class MeetingsPage implements OnInit {
       if (data.length <= 0) {
         this.status = 'You don`t have created events yet.';
       }
+      setTimeout( () => {
+        this.openSlideItem();
+      }, 1000);
       this.help.dismissLoading();
     });
 
+    this.getJoinedEvents();
+  }
+
+  getJoinedEvents() {
+    this.joinedEventsArray = [];
     this.joinedEvents = this.fs.collection('events-members', ref => ref
       .where('userId', '==', localStorage.getItem('userId'))
       .orderBy('timestamp'))
@@ -75,10 +93,100 @@ export class MeetingsPage implements OnInit {
     if (this.subJoinedEvents) {
       this.subJoinedEvents.unsubscribe();
     }
+    if (this.subDelete) {
+      this.subDelete.unsubscribe();
+    }
+    if (this.subJoined) {
+      this.subJoined.unsubscribe();
+    }
   }
 
   copyCode(code) {
     this.help.toastInfo('Code was copied');
     this.clipboard.copy(code);
   }
+
+  async deleteMeeting(meetingId) {
+    this.help.presentLoading();
+    const alert = await this.alertController.create({
+      header: 'Delete meeting',
+      message: 'Are you sure you want delete this meeting?',
+      buttons: [{
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {}
+        }, {
+          text: 'Okay',
+          handler: () => {
+            this.fs.collection('events').doc(meetingId).delete().then(data => {
+            this.subDelete = this.fs.collection('events-members', ref => ref.where('meetingId', '==', meetingId))
+              .snapshotChanges().subscribe((res: any) => {
+                res.forEach(element => {
+                  this.fs.collection('events-members').doc(element.payload.doc.id).delete();
+                  this.help.dismissLoading();
+                });
+              });
+            this.help.toastInfo('Event was deleted');
+            });
+          }
+        }]
+    });
+    await alert.present();
+  }
+
+  async leaveMeeting(meetingId) {
+    this.help.presentLoading();
+    const alert = await this.alertController.create({
+      header: 'Leave meeting',
+      message: 'Are you sure you want leave this meeting?',
+      buttons: [{
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {}
+        }, {
+          text: 'Okay',
+          handler: () => {
+            this.subJoined = this.fs.collection('events-members', ref => ref
+              .where('userId', '==', localStorage.getItem('userId'))
+              .where('meetingId', '==', meetingId))
+              .snapshotChanges().subscribe((res: any) => {
+              this.fs.collection('events-members').doc(res[0].payload.doc.id).delete().then((data) => {
+                this.getJoinedEvents();
+                this.help.toastInfo('Event was leaved');
+                this.help.dismissLoading();
+              });
+            });
+          }
+        }]
+    });
+    await alert.present();
+  }
+
+  async openSlideItem(): Promise<number> {
+    const item = this.slide.nativeElement;
+    if (item && item.open) {
+      setTimeout( () => {
+        this.closeSlideItem();
+      }, 1500);
+      return item.open();
+    }
+  }
+
+  async closeSlideItem(): Promise<boolean> {
+    const item = this.slide.nativeElement;
+    if (item && item.closeOpened) {
+      return item.closeOpened();
+    }
+  }
+
+  goToEvent(meetingId) {
+    this.navCtrl.navigateForward('/event/' + meetingId);
+  }
+
+  editMeeting(meetingId) {
+    this.navCtrl.navigateForward('/edit-meeting/' + meetingId);
+  }
+
 }
