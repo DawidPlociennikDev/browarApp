@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      BrowarApp
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header class="header">
+    <div class="avatar-box">
+      <img src="{{avatar}}" alt="avatar" class="avatar">
+    </div>
+    <div class="event-box">
+      <h4><strong>{{name}}</strong></h4>
+      {{ address }}<br>
+      {{ hour | date: "H:mm" }}, {{ date | date: "dd MMM yyyy" }}
+    </div>
+  </ion-header>
+  <div id="container">
+    <h3>Meeting starts in</h3>
+    <h1 id="countTime">
+      <ion-spinner name="crescent"></ion-spinner>
+    </h1>
+  </div>
+</ion-content>

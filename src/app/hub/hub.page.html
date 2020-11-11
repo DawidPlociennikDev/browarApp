@@ -1,0 +1,57 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="logOut()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>
+      BrowarApp
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header class="header">
+      <div class="avatar-box">
+        <img src="{{avatar}}" alt="avatar" class="avatar">
+      </div>
+      <div class="welcome">
+        Welcome <strong>{{firstName}}</strong>!
+      </div>
+  </ion-header>
+  <div id="container">
+    <ion-slides>
+      <ion-slide>
+        <div class="boxes">
+          <div class="box shadow" (click)="goToPage('create-meeting')">
+            Create Meeting
+            <ion-icon name="create-outline" class="box-icon"></ion-icon>
+          </div>
+          <div class="box shadow" (click)="goToPage('join-meeting')">
+            Join Meeting
+            <ion-icon name="enter-outline" class="box-icon"></ion-icon>
+          </div>
+          <div class="arrow arrow-right">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </div>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div class="boxes">
+          <div class="box shadow" (click)="goToPage('meetings')">
+            Your meetings
+            <ion-icon name="beer-outline" class="box-icon"></ion-icon>
+          </div>
+          <div class="box shadow" (click)="goToPage('join-meeting')">
+            Statistics
+            <ion-icon name="stats-chart-outline" class="box-icon"></ion-icon>
+          </div>
+          <div class="arrow arrow-left">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </div>
+        </div>
+      </ion-slide>
+    </ion-slides>
+  </div>
+</ion-content>

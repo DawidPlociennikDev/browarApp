@@ -1,25 +1,21 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Facebook login
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
   <div id="container">
     <div>{{status}}</div>
     <ion-button (click)="facebookLogin()">
-      Login via Facebook
+      <ion-icon name="logo-facebook" class="ion-margin-horizontal"></ion-icon>
     </ion-button>
-    <ion-button (click)="symulateLogin()">
-      Symulate login
+    <br>
+    <ion-button (click)="symulateLogin()"  class="ion-margin-vertical">
+      Simulate login
     </ion-button>
   </div>
 </ion-content>

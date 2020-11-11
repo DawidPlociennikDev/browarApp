@@ -15,6 +15,9 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { firebaseConfig } from 'src/environments/environment';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+import { DatePipe } from '@angular/common';
+import { File } from '@ionic-native/file/ngx';
+import { NgxMaskIonicModule } from 'ngx-mask-ionic'
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +28,8 @@ import { Clipboard } from '@ionic-native/clipboard/ngx';
     AppRoutingModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    NgxMaskIonicModule.forRoot()
   ],
   providers: [
     StatusBar,
@@ -33,7 +37,9 @@ import { Clipboard } from '@ionic-native/clipboard/ngx';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     Facebook,
     AngularFireAuth,
-    Clipboard
+    Clipboard,
+    DatePipe,
+    File
   ],
   bootstrap: [AppComponent]
 })
