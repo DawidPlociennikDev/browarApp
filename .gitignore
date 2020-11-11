@@ -30,5 +30,6 @@ npm-debug.log*
 /plugins
 /www
 /src/environments
+/environments
 
 /key_app
