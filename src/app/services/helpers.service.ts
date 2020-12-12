@@ -14,8 +14,12 @@ export class HelpersService {
     private toastCtrl: ToastController,
   ) { }
 
-  nav(param) {
-    this.navCtrl.navigateForward('/' + param);
+  nav(page) {
+    this.navCtrl.navigateForward('/' + page);
+  }
+
+  navParam(page, param) {
+    this.navCtrl.navigateForward('/' + page + '/' + param);
   }
 
   async presentLoading() {

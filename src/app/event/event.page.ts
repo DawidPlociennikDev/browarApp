@@ -17,6 +17,7 @@ export class EventPage implements OnInit {
   hour: string;
   address: string;
   avatar: string;
+  active: boolean
   eventStartSeconds: number;
 
   subEvents: any;
@@ -41,6 +42,7 @@ export class EventPage implements OnInit {
         this.hour = data[0]['hour'];
         this.address = data[0]['address'];
         this.avatar = data[0]['avatar'];
+        this.active = data[0]['active'];
 
         const transformDate = this.datePipe.transform(data[0]['date'], 'yyyy-MM-dd');
         const dateEvent = new Date(transformDate).getTime();

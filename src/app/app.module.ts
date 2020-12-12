@@ -17,7 +17,8 @@ import { firebaseConfig } from 'src/environments/environment';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { DatePipe } from '@angular/common';
 import { File } from '@ionic-native/file/ngx';
-import { NgxMaskIonicModule } from 'ngx-mask-ionic'
+import { NgxMaskIonicModule } from 'ngx-mask-ionic';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -29,7 +30,8 @@ import { NgxMaskIonicModule } from 'ngx-mask-ionic'
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFirestoreModule,
     AngularFireStorageModule,
-    NgxMaskIonicModule.forRoot()
+    NgxMaskIonicModule.forRoot(),
+    HttpClientModule,
   ],
   providers: [
     StatusBar,

@@ -61,7 +61,7 @@ export class EditMeetingPage implements OnInit {
     }
   }
 
-  editEvent() {
+  editEvent(products = null) {
     if (this.validFields() === true) {
       this.help.presentLoading();
       this.fs.collection('events').doc(this.meetingId).update({
@@ -71,8 +71,15 @@ export class EditMeetingPage implements OnInit {
         address: this.address,
         avatar: this.avatar,
       }).then(() => {
-        this.help.dismissLoading();
-        this.help.toastInfo('Event was updated');
+        if (products === true) {
+          this.help.dismissLoading();
+          this.help.toastInfo('Event was updated');
+          this.help.navParam('add-products', this.meetingId);
+        }
+        else {
+          this.help.dismissLoading();
+          this.help.toastInfo('Event was updated');
+        }
       }).catch((error) => {
         this.status = JSON.stringify(error);
       });

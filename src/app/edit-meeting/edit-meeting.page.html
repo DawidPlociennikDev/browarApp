@@ -39,8 +39,11 @@
       <ion-label position="floating">Exact address</ion-label>
       <ion-input [(ngModel)]="address"></ion-input>
     </ion-item>
-    <div class="submit_btn">
+    <div class="submit_btn mb-3">
       <ion-button expand="block" shape="round" (click)="editEvent()">Update meeting</ion-button>
+    </div>
+    <div class="submit_btn">
+      <ion-button color="dark" expand="block" shape="round" (click)="editEvent(true)">Update meeting and add products</ion-button>
     </div>
   </div>
 </ion-content>

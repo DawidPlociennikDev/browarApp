@@ -1,0 +1,65 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)="dismiss()">
+      <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+    </ion-buttons>
+    <ion-title>
+      BrowarApp
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div id="container">
+    <div class="status">
+      {{status}}
+    </div>
+    <ion-item class="input_item hide_border">
+      <label style="margin: 0 auto;">
+        <div class="change_photo">
+          <div class="logo_event shadow" [style.backgroundImage]="'url(' + photo + ')'"></div>
+          <ion-icon name="camera-reverse-outline" class="logo_edit shadow"></ion-icon>
+        </div>
+        <input type="file" class="input_file" (change)="uploadPhoto($event)">
+      </label>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label position="floating">Name beer</ion-label>
+      <ion-input [(ngModel)]="name"></ion-input>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label position="floating">Barcode</ion-label>
+      <ion-input [(ngModel)]="barcode" type="number"></ion-input>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label position="floating">Percentage of alcohol</ion-label>
+      <ion-input [(ngModel)]="percent" type="number"></ion-input>
+      <span slot="end">%</span>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label position="floating">Blg</ion-label>
+      <ion-input [(ngModel)]="blg" type="number"></ion-input>
+      <span slot="end">°</span>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label position="floating">Country</ion-label>
+      <ion-select class="selectFullWidth" [(ngModel)]="country">
+        <ion-select-option *ngFor="let item of countriesArray" [value]='item.title'>{{ item.title }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label position="floating">Manufacturer</ion-label>
+      <ion-input [(ngModel)]="manufacture"></ion-input>
+    </ion-item>
+    <ion-item class="input_item">
+      <ion-label position="floating">Short description</ion-label>
+      <ion-textarea rows="6" [(ngModel)]="description"></ion-textarea>
+    </ion-item>
+    <div class="status">
+      {{status}}
+    </div>
+    <div class="submit_btn mb-3">
+      <ion-button expand="block" shape="round" (click)="editProduct()">Update product</ion-button>
+    </div>
+  </div>
+</ion-content>

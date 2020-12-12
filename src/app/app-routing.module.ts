@@ -35,6 +35,18 @@ const routes: Routes = [
     path: 'event/:meetingId',
     loadChildren: () => import('./event/event.module').then( m => m.EventPageModule)
   },
+  {
+    path: 'add-products/:eventId',
+    loadChildren: () => import('./add-products/add-products.module').then( m => m.AddProductsPageModule)
+  },
+  {
+    path: 'add-product-modal',
+    loadChildren: () => import('./modal/add-product-modal/add-product-modal.module').then( m => m.AddProductModalPageModule)
+  },
+  {
+    path: 'edit-product-modal/:beerId',
+    loadChildren: () => import('./modal/edit-product-modal/edit-product-modal.module').then( m => m.EditProductModalPageModule)
+  },
 ];
 
 @NgModule({

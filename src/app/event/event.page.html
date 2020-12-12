@@ -22,8 +22,11 @@
   </ion-header>
   <div id="container">
     <h3>Meeting starts in</h3>
-    <h1 id="countTime">
+    <h1 id="countTime" *ngIf="active === true">
       <ion-spinner name="crescent"></ion-spinner>
+    </h1>
+    <h1 *ngIf="active !== true">
+      Event is not actived.
     </h1>
   </div>
 </ion-content>

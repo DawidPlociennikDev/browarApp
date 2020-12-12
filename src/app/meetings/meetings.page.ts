@@ -3,7 +3,6 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { HelpersService } from '../services/helpers.service';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
 import { AlertController } from '@ionic/angular';
-import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -32,7 +31,6 @@ export class MeetingsPage implements OnInit {
     public help: HelpersService,
     private clipboard: Clipboard,
     public alertController: AlertController,
-    public navCtrl: NavController,
   ) {
     this.selected = 0;
   }
@@ -107,7 +105,6 @@ export class MeetingsPage implements OnInit {
   }
 
   async deleteMeeting(meetingId) {
-    this.help.presentLoading();
     const alert = await this.alertController.create({
       header: 'Delete meeting',
       message: 'Are you sure you want delete this meeting?',
@@ -119,6 +116,7 @@ export class MeetingsPage implements OnInit {
         }, {
           text: 'Okay',
           handler: () => {
+            this.help.presentLoading();
             this.fs.collection('events').doc(meetingId).delete().then(data => {
             this.subDelete = this.fs.collection('events-members', ref => ref.where('meetingId', '==', meetingId))
               .snapshotChanges().subscribe((res: any) => {
@@ -136,7 +134,6 @@ export class MeetingsPage implements OnInit {
   }
 
   async leaveMeeting(meetingId) {
-    this.help.presentLoading();
     const alert = await this.alertController.create({
       header: 'Leave meeting',
       message: 'Are you sure you want leave this meeting?',
@@ -148,6 +145,7 @@ export class MeetingsPage implements OnInit {
         }, {
           text: 'Okay',
           handler: () => {
+          this.help.presentLoading();
             this.subJoined = this.fs.collection('events-members', ref => ref
               .where('userId', '==', localStorage.getItem('userId'))
               .where('meetingId', '==', meetingId))
@@ -182,11 +180,11 @@ export class MeetingsPage implements OnInit {
   }
 
   goToEvent(meetingId) {
-    this.navCtrl.navigateForward('/event/' + meetingId);
+    this.help.navParam('event', meetingId);
   }
 
   editMeeting(meetingId) {
-    this.navCtrl.navigateForward('/edit-meeting/' + meetingId);
+    this.help.navParam('edit-meeting', meetingId);
   }
 
 }
