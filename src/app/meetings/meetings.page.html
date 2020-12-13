@@ -54,14 +54,14 @@
 
         <ion-item-sliding *ngFor="let item of joinedEventsArray">
           <ion-item>
-            <ion-avatar slot="start">
+            <ion-avatar slot="start" (click)="goToEvent(item.id)">
               <img [src]="item.avatar">
             </ion-avatar>
             <ion-label>
-              <h2>{{ item.name }}</h2>
+              <h2 (click)="goToEvent(item.id)">{{ item.name }}</h2>
               <p (click)="copyCode(item.code)">{{ item.code }} <ion-icon name="copy-outline"></ion-icon>
               </p>
-              <h4>{{ item.address }}<br>{{ item.hour | date: "H:mm" }}, {{ item.date | date: "dd MMM yyyy" }}</h4>
+              <h4 (click)="goToEvent(item.id)">{{ item.address }}<br>{{ item.hour | date: "H:mm" }}, {{ item.date | date: "dd MMM yyyy" }}</h4>
             </ion-label>
           </ion-item>
           <ion-item-options>

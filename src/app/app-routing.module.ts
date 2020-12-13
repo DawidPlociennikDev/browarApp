@@ -47,6 +47,10 @@ const routes: Routes = [
     path: 'edit-product-modal/:beerId',
     loadChildren: () => import('./modal/edit-product-modal/edit-product-modal.module').then( m => m.EditProductModalPageModule)
   },
+  {
+    path: 'users-list',
+    loadChildren: () => import('./modal/users-list/users-list.module').then( m => m.UsersListPageModule)
+  },
 ];
 
 @NgModule({

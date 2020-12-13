@@ -35,8 +35,13 @@
     }
     .event-box {
         margin-left: 10px;
+        width: 100%;
         h4 {
             margin-top: 0;
         }
+    }
+    .count_user {
+      margin-top: 15px;
+      text-align: right;
     }
 }

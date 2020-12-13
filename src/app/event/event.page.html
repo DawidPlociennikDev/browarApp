@@ -18,6 +18,12 @@
       <h4><strong>{{name}}</strong></h4>
       {{ address }}<br>
       {{ hour | date: "H:mm" }}, {{ date | date: "dd MMM yyyy" }}
+      <div class="count_user">
+        <ion-button (click)="usersList()">
+          {{ userConfirm }} / {{ userJoined }}
+          <ion-icon name="people-circle-outline"></ion-icon>
+        </ion-button>
+      </div>
     </div>
   </ion-header>
   <div id="container">
