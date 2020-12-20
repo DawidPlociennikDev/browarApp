@@ -85,6 +85,7 @@ export class CreateMeetingPage implements OnInit {
             } else {
               this.completeProducts(docId);
             }
+            this.joinMeeting(docId, randomCode);
           }).catch((error) => {
             this.status = JSON.stringify(error);
           });
@@ -142,4 +143,24 @@ export class CreateMeetingPage implements OnInit {
     });
     await alert.present();
   }
+
+  joinMeeting(meetingId, code) {
+    const time = firebase.firestore.FieldValue.serverTimestamp();
+    const docId = Md5.hashStr(time + '|' + meetingId + '|' + localStorage.getItem('userId')).toString();
+    this.fs.collection('events-members').doc(docId).set({
+      id: docId,
+      userId: localStorage.getItem('userId'),
+      meetingId: meetingId,
+      firstName: localStorage.getItem('firstName'),
+      lastName: localStorage.getItem('lastName'),
+      avatar: localStorage.getItem('avatar'),
+      email: localStorage.getItem('email'),
+      code: code,
+      timestamp: time
+    }).then(() => {
+    }).catch((error) => {
+      this.status = JSON.stringify(error);
+    });
+  }
+
 }

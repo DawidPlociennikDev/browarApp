@@ -8,6 +8,8 @@ import { File } from '@ionic-native/file/ngx';
 import { ModalController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { apiUrl } from 'src/environments/environment';
+import { PopoverController } from '@ionic/angular';
+import { PopoverComponent } from '../../component/popover/popover.component';
 
 @Component({
   selector: 'app-add-product-modal',
@@ -34,7 +36,8 @@ export class AddProductModalPage implements OnInit {
     public help: HelpersService,
     private file: File,
     public modalController: ModalController,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    public popoverController: PopoverController
   ) {
     this.httpClient.get(apiUrl + 'api/countries/get_all').subscribe((res) => {
       this.countriesArray = res['data'];
@@ -114,4 +117,15 @@ export class AddProductModalPage implements OnInit {
       dismissed: true,
     });
   }
+
+  async blgInfo(ev: any) {
+    const popover = await this.popoverController.create({
+      component: PopoverComponent,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
+  }
+
 }

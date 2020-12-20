@@ -90,7 +90,7 @@ export class AddProductsPage implements OnInit {
     const modal = await this.modalController.create({
       component: AddProductModalPage,
       componentProps: {
-        'meetingId': this.eventId,
+        'eventId': this.eventId,
       }
     });
     return await modal.present();

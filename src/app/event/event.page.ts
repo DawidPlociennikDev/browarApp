@@ -51,7 +51,9 @@ export class EventPage implements OnInit {
     this.subCheckIn = this.fs.collection('events-members', ref => ref.where('userId', '==', localStorage.getItem('userId')).where('meetingId', '==', this.eventId))
       .valueChanges()
       .subscribe((data) => {
-        this.checkInApproved = data[0]['checkIn'];
+        if (data.length > 0) {
+          this.checkInApproved = data[0]['checkIn'];
+        }
       });
   }
 
@@ -101,6 +103,7 @@ export class EventPage implements OnInit {
     const eventOwner = this.owner;
     const userId = this.userId;
     const checkInApproved = this.checkInApproved;
+    let endCount = false;
     const interval = setInterval(function() {
       const now = new Date().getTime();
       const distance = countDownDate - now;
@@ -123,6 +126,7 @@ export class EventPage implements OnInit {
       }
       if (distance < 0) {
         clearInterval(interval);
+        endCount = true;
         if (eventOwner === userId) {
           document.getElementById('countTime').innerHTML = '<ion-button id="startEvent">Start Event</ion-button>';
         } else {
@@ -134,17 +138,20 @@ export class EventPage implements OnInit {
         }
       }
     }, 1000);
+    this.interval = interval;
     setTimeout(() => {
-      if (eventOwner === userId) {
-        this.elementRef.nativeElement.querySelector("#startEvent")
-          .addEventListener('click', (e) => {
-            console.log('start event', e)
-        });
-      } else if (checkInApproved !== 1) {
-        this.elementRef.nativeElement.querySelector("#checkIn")
-          .addEventListener('click', (e) => {
-            this.checkIn();
-        }); 
+      if (endCount === true) {
+        if (eventOwner === userId) {
+          this.elementRef.nativeElement.querySelector("#startEvent")
+            .addEventListener('click', (e) => {
+              console.log('start event', e)
+          });
+        } else if (checkInApproved !== 1) {
+          this.elementRef.nativeElement.querySelector("#checkIn")
+            .addEventListener('click', (e) => {
+              this.checkIn();
+          }); 
+        }
       }
     }, 1000);
   }

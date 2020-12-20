@@ -1,13 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
-import * as firebase from 'firebase';
 import { HelpersService } from '../../services/helpers.service';
-import { Md5 } from 'ts-md5/dist/md5';
 import { File } from '@ionic-native/file/ngx';
 import { ModalController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { apiUrl } from 'src/environments/environment';
+import { PopoverController } from '@ionic/angular';
+import { PopoverComponent } from '../../component/popover/popover.component';
 
 @Component({
   selector: 'app-edit-product-modal',
@@ -37,7 +37,8 @@ export class EditProductModalPage implements OnInit {
     public help: HelpersService,
     private file: File,
     public modalController: ModalController,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    public popoverController: PopoverController
   ) {
     this.httpClient.get(apiUrl + 'api/countries/get_all').subscribe((res) => {
       this.countriesArray = res['data'];
@@ -125,5 +126,16 @@ export class EditProductModalPage implements OnInit {
       dismissed: true,
     });
   }
+
+  async blgInfo(ev: any) {
+    const popover = await this.popoverController.create({
+      component: PopoverComponent,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
+  }
+
 
 }
