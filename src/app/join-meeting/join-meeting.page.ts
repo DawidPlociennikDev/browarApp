@@ -90,7 +90,7 @@ export class JoinMeetingPage implements OnInit {
       this.help.presentLoading();
       this.help.toastInfo('You joined to meeting!');
       this.help.dismissLoading();
-      this.help.nav('hub');
+      this.help.navParam('event', meetingId);
     }).catch((error) => {
       this.status = JSON.stringify(error);
     });

@@ -6,6 +6,8 @@ import { DatePipe } from '@angular/common';
 import { ModalController } from '@ionic/angular';
 import { UsersListPage } from '../modal/users-list/users-list.page';
 import { AlertController } from '@ionic/angular';
+import { PopoverController } from '@ionic/angular';
+import { PopoverComponent } from '../component/popover/popover.component';
 
 @Component({
   selector: 'app-event',
@@ -35,6 +37,14 @@ export class EventPage implements OnInit {
   subCheckIn: any;
   interval: any;
 
+  eventStarted: boolean;
+
+  beers: any;
+  rateTaste: number;
+  rateLook: number;
+  rateCraft: number;
+  ratePower: number;
+
   constructor(
     private fs: AngularFirestore,
     public help: HelpersService,
@@ -42,12 +52,18 @@ export class EventPage implements OnInit {
     private datePipe: DatePipe,
     public modalController: ModalController,
     private elementRef: ElementRef,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public popoverController: PopoverController
   ) {
     this.eventId = this.route.snapshot.paramMap.get('meetingId');
     this.userJoined = 0;
     this.userConfirm = 0;
     this.userId = localStorage.getItem('userId');
+    this.eventStarted = false;
+    this.rateTaste = 0;
+    this.rateLook = 0;
+    this.rateCraft = 0;
+    this.ratePower = 0;
     this.subCheckIn = this.fs.collection('events-members', ref => ref.where('userId', '==', localStorage.getItem('userId')).where('meetingId', '==', this.eventId))
       .valueChanges()
       .subscribe((data) => {
@@ -69,16 +85,21 @@ export class EventPage implements OnInit {
         this.avatar = data[0]['avatar'];
         this.active = data[0]['active'];
         this.owner = data[0]['userId'];
+        this.eventStarted = data[0]['start'];
 
-        const transformDate = this.datePipe.transform(data[0]['date'], 'yyyy-MM-dd');
-        const dateEvent = new Date(transformDate).getTime();
-        let hoursEvent = this.datePipe.transform(data[0]['hour'], 'HH:mm');
-        const a = hoursEvent.split(':');
-        const seconds = (+a[0] - 1) * 60 * 60 + (+a[1]) * 60;
-        hoursEvent = (seconds * 1000).toString();
+        if (this.eventStarted === false) {
+          const transformDate = this.datePipe.transform(data[0]['date'], 'yyyy-MM-dd');
+          const dateEvent = new Date(transformDate).getTime();
+          let hoursEvent = this.datePipe.transform(data[0]['hour'], 'HH:mm');
+          const a = hoursEvent.split(':');
+          const seconds = (+a[0] - 1) * 60 * 60 + (+a[1]) * 60;
+          hoursEvent = (seconds * 1000).toString();
 
-        this.eventStartSeconds = Math.floor(dateEvent + parseInt(hoursEvent, 10));
-        this.countDown();
+          this.eventStartSeconds = Math.floor(dateEvent + parseInt(hoursEvent, 10));
+          this.countDown();
+        } else {
+          this.renderBeers();
+        }
 
         this.subEvents.unsubscribe();
         this.help.dismissLoading();
@@ -144,7 +165,7 @@ export class EventPage implements OnInit {
         if (eventOwner === userId) {
           this.elementRef.nativeElement.querySelector("#startEvent")
             .addEventListener('click', (e) => {
-              console.log('start event', e)
+              this.startEvent();
           });
         } else if (checkInApproved !== 1) {
           this.elementRef.nativeElement.querySelector("#checkIn")
@@ -184,6 +205,30 @@ export class EventPage implements OnInit {
     await alert.present();
   }
   
+  async startEvent() {
+    const alert = await this.alertController.create({
+      header: 'Start Event',
+      message: 'Are you sure you want start event?',
+      buttons: [{
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: (blah) => {}
+        }, {
+          text: 'Okay',
+          handler: () => {
+            this.fs.collection('events').doc(this.eventId).update({
+              start: true,
+            }).then(() => {
+              console.log('event was started');
+              this.renderBeers();
+            });
+          }
+        }]
+    });
+    await alert.present();
+  }
+
   async usersList() {
     const modal = await this.modalController.create({
       component: UsersListPage,
@@ -209,4 +254,42 @@ export class EventPage implements OnInit {
     }
   }
 
+  renderBeers() {
+    this.eventStarted = true;
+    this.beers = this.fs.collection('beers', ref => ref.where('eventId', '==', this.eventId)).valueChanges();
+  }
+
+  async blgInfo(ev: any) {
+    const popover = await this.popoverController.create({
+      component: PopoverComponent,
+      cssClass: 'my-custom-class',
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
+  }
+
+  onRate(rate) {
+    if (this.rateTaste == 0) {
+      this.rateTaste = rate;
+    }
+  }
+  
+  onRateLook(rate) {
+    if (this.rateLook == 0) {
+      this.rateLook = rate;
+    }
+  }
+  
+  onRateCraft(rate) {
+    if (this.rateCraft == 0) {
+      this.rateCraft = rate;
+    }
+  }
+
+  onRatePower(rate) {
+    if (this.ratePower == 0) {
+      this.ratePower = rate;
+    }
+  }
 }

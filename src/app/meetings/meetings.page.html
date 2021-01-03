@@ -12,12 +12,12 @@
 <ion-content [fullscreen]="true">
   <div id="container">
     <ion-list>
-      <ion-list-header>
+      <!-- <ion-list-header>
         <ion-select [(ngModel)]="selected" interface="action-sheet" class="custom-select">
           <ion-select-option [value]="0">Your created events</ion-select-option>
           <ion-select-option [value]="1">Your joined events</ion-select-option>
         </ion-select>
-      </ion-list-header>
+      </ion-list-header> -->
       <div *ngIf="selected == 0">
         <div class="status">
           {{status}}

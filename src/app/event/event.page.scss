@@ -45,3 +45,23 @@
       text-align: right;
     }
 }
+
+.beer-desc {
+  display: flex;
+}
+.d-block {
+  display: block;
+}
+.float-right {
+  float: right;
+}
+.rate-component {
+  display: flex;
+  margin-top: 30px;
+  justify-content: center;
+  align-items: center;
+}
+ion-icon {
+  margin: 0 10px;
+  transform: scale(1.5);
+}

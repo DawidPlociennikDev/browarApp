@@ -20,19 +20,242 @@
       {{ hour | date: "H:mm" }}, {{ date | date: "dd MMM yyyy" }}
       <div class="count_user">
         <ion-button (click)="usersList()">
-          {{ userConfirm }} / {{ userJoined }}
+          {{ userJoined }}
           <ion-icon name="people-circle-outline"></ion-icon>
         </ion-button>
       </div>
     </div>
   </ion-header>
   <div id="container">
-    <h3>Meeting starts in</h3>
-    <h1 id="countTime" *ngIf="active === true">
-      <ion-spinner name="crescent"></ion-spinner>
-    </h1>
-    <h1 *ngIf="active !== true">
-      Event is not actived.
-    </h1>
+    <div *ngIf="eventStarted === false">
+      <h3>Meeting starts in</h3>
+      <h1 id="countTime" *ngIf="active === true">
+        <ion-spinner name="crescent"></ion-spinner>
+      </h1>
+      <h1 *ngIf="active !== true">
+        Event is not actived.
+      </h1>
+    </div>
+    <div *ngIf="eventStarted === true">
+      <hr>
+      <ion-slides>
+        <ion-slide *ngFor="let item of beers | async; let i = index" class="d-block">
+          <h5>{{ item.name }}</h5>
+          <div class="beer-desc">
+            <div>
+              <img [src]="item.photo" alt="">
+            </div>
+            <div>
+              <ion-list>
+                <ion-item>
+                  <ion-label>Alcohol: <strong>{{ item.percent }}%</strong></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Blg: <strong>{{ item.blg }}°</strong>
+                  <ion-icon class="float-right" name="help-circle-outline" (click)="blgInfo()"></ion-icon>
+                  </ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Country: <strong>{{ item.country }}</strong></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Manufacturer: <strong>{{ item.manufacture }}</strong></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Barcode: <strong>{{ item.barcode }}</strong></ion-label>
+                </ion-item>
+              </ion-list>
+                <ion-item>
+                  <ion-label>{{ item.description }}</ion-label>
+                </ion-item>
+            </div>
+          </div>
+          <div class="rate-component">
+            SMAK:
+            <div *ngIf="rateTaste==0">
+              <ion-icon color="primary" name="star-outline" (click)="onRate(1)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(2)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(5)"></ion-icon>
+            </div>
+            <div *ngIf="rateTaste==1">
+              <ion-icon color="primary" name="star" (click)="onRate(1)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(2)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(5)"></ion-icon>
+            </div>
+            <div *ngIf="rateTaste==2">
+              <ion-icon color="primary" name="star" (click)="onRate(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRate(2)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(5)"></ion-icon>
+            </div>
+
+            <div *ngIf="rateTaste==3">
+              <ion-icon color="primary" name="star" (click)="onRate(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRate(2)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRate(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(5)"></ion-icon>
+            </div>
+            <div *ngIf="rateTaste==4">
+              <ion-icon color="primary" name="star" (click)="onRate(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRate(2)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRate(3)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRate(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRate(5)"></ion-icon>
+            </div>
+            <div *ngIf="rateTaste==5">
+              <ion-icon color="primary" name="star" (click)="onRate(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRate(2)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRate(3)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRate(4)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRate(5)"></ion-icon>
+            </div>
+          </div>
+          <div class="rate-component">
+            WYGLĄD:
+            <div *ngIf="rateLook==0">
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(1)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(2)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(5)"></ion-icon>
+            </div>
+            <div *ngIf="rateLook==1">
+              <ion-icon color="primary" name="star" (click)="onRateLook(1)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(2)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(5)"></ion-icon>
+            </div>
+            <div *ngIf="rateLook==2">
+              <ion-icon color="primary" name="star" (click)="onRateLook(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateLook(2)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(5)"></ion-icon>
+            </div>
+            
+            <div *ngIf="rateLook==3">
+              <ion-icon color="primary" name="star" (click)="onRateLook(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateLook(2)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateLook(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(5)"></ion-icon>
+            </div>
+            <div *ngIf="rateLook==4">
+              <ion-icon color="primary" name="star" (click)="onRateLook(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateLook(2)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateLook(3)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateLook(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateLook(5)"></ion-icon>
+            </div>
+            <div *ngIf="rateLook==5">
+              <ion-icon color="primary" name="star" (click)="onRateLook(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateLook(2)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateLook(3)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateLook(4)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateLook(5)"></ion-icon>
+            </div>
+          </div>
+          <div class="rate-component">
+            KUNSZT:
+            <div *ngIf="rateCraft==0">
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(1)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(2)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(5)"></ion-icon>
+            </div>
+            <div *ngIf="rateCraft==1">
+              <ion-icon color="primary" name="star" (click)="onRateCraft(1)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(2)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(5)"></ion-icon>
+            </div>
+            <div *ngIf="rateCraft==2">
+              <ion-icon color="primary" name="star" (click)="onRateCraft(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateCraft(2)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(5)"></ion-icon>
+            </div>
+          
+            <div *ngIf="rateCraft==3">
+              <ion-icon color="primary" name="star" (click)="onRateCraft(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateCraft(2)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateCraft(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(5)"></ion-icon>
+            </div>
+            <div *ngIf="rateCraft==4">
+              <ion-icon color="primary" name="star" (click)="onRateCraft(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateCraft(2)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateCraft(3)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateCraft(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRateCraft(5)"></ion-icon>
+            </div>
+            <div *ngIf="rateCraft==5">
+              <ion-icon color="primary" name="star" (click)="onRateCraft(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateCraft(2)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateCraft(3)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateCraft(4)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRateCraft(5)"></ion-icon>
+            </div>
+          </div>
+          <div class="rate-component">
+            MOC:
+            <div *ngIf="ratePower==0">
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(1)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(2)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(5)"></ion-icon>
+            </div>
+            <div *ngIf="ratePower==1">
+              <ion-icon color="primary" name="star" (click)="onRatePower(1)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(2)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(5)"></ion-icon>
+            </div>
+            <div *ngIf="ratePower==2">
+              <ion-icon color="primary" name="star" (click)="onRatePower(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRatePower(2)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(5)"></ion-icon>
+            </div>
+          
+            <div *ngIf="ratePower==3">
+              <ion-icon color="primary" name="star" (click)="onRatePower(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRatePower(2)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRatePower(3)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(5)"></ion-icon>
+            </div>
+            <div *ngIf="ratePower==4">
+              <ion-icon color="primary" name="star" (click)="onRatePower(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRatePower(2)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRatePower(3)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRatePower(4)"></ion-icon>
+              <ion-icon color="primary" name="star-outline" (click)="onRatePower(5)"></ion-icon>
+            </div>
+            <div *ngIf="ratePower==5">
+              <ion-icon color="primary" name="star" (click)="onRatePower(1)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRatePower(2)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRatePower(3)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRatePower(4)"></ion-icon>
+              <ion-icon color="primary" name="star" (click)="onRatePower(5)"></ion-icon>
+            </div>
+          </div>
+        </ion-slide>
+      </ion-slides>
+    </div>
   </div>
 </ion-content>

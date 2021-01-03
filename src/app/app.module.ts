@@ -31,7 +31,7 @@ import { HttpClientModule } from '@angular/common/http';
     AngularFirestoreModule,
     AngularFireStorageModule,
     NgxMaskIonicModule.forRoot(),
-    HttpClientModule,
+    HttpClientModule
   ],
   providers: [
     StatusBar,
