@@ -41,6 +41,7 @@ export class MeetingsPage implements OnInit {
     this.status2 = '';
     this.events = this.fs.collection('events', ref => ref
       .where('userId', '==', localStorage.getItem('userId'))
+       .where('active', '==', true)
       .orderBy('timestamp'))
       .valueChanges();
     this.subEvents = this.events.subscribe((data) => {

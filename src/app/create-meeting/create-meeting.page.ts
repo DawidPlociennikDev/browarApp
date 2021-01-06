@@ -155,6 +155,7 @@ export class CreateMeetingPage implements OnInit {
       lastName: localStorage.getItem('lastName'),
       avatar: localStorage.getItem('avatar'),
       email: localStorage.getItem('email'),
+      active: true,
       code: code,
       timestamp: time
     }).then(() => {

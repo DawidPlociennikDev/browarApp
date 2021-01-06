@@ -8,6 +8,7 @@ import { UsersListPage } from '../modal/users-list/users-list.page';
 import { AlertController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { PopoverComponent } from '../component/popover/popover.component';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-event',
@@ -35,6 +36,7 @@ export class EventPage implements OnInit {
   subUsersJoined: any;
   subUsersConfirmed: any;
   subCheckIn: any;
+  subCountBeers: any;
   interval: any;
 
   eventStarted: boolean;
@@ -44,6 +46,9 @@ export class EventPage implements OnInit {
   rateLook: number;
   rateCraft: number;
   ratePower: number;
+
+  showBeer: number;
+  countBeers: number
 
   constructor(
     private fs: AngularFirestore,
@@ -252,11 +257,18 @@ export class EventPage implements OnInit {
     if (this.subUsersConfirmed) {
       this.subUsersConfirmed.unsubscribe();
     }
+    if (this.subCountBeers) {
+      this.subCountBeers.unsubscribe();
+    }
   }
 
   renderBeers() {
     this.eventStarted = true;
     this.beers = this.fs.collection('beers', ref => ref.where('eventId', '==', this.eventId)).valueChanges();
+    this.subCountBeers = this.beers.subscribe((data) => {
+      this.countBeers = data.length;
+    });
+    this.showBeer = 0;
   }
 
   async blgInfo(ev: any) {
@@ -270,26 +282,59 @@ export class EventPage implements OnInit {
   }
 
   onRate(rate) {
-    if (this.rateTaste == 0) {
-      this.rateTaste = rate;
-    }
+    this.rateTaste = rate;
   }
   
   onRateLook(rate) {
-    if (this.rateLook == 0) {
-      this.rateLook = rate;
-    }
+    this.rateLook = rate;
   }
   
   onRateCraft(rate) {
-    if (this.rateCraft == 0) {
-      this.rateCraft = rate;
-    }
+    this.rateCraft = rate;
   }
 
   onRatePower(rate) {
-    if (this.ratePower == 0) {
-      this.ratePower = rate;
+    this.ratePower = rate;
+  }
+
+  anotherBeer(beerId) {
+    if (
+      this.rateTaste != 0 &&
+      this.rateLook != 0 &&
+      this.rateCraft != 0 &&
+      this.ratePower != 0
+    ) {
+      this.fs.collection('opinions').doc(beerId).set({
+        userId: localStorage.getItem('userId'),
+        eventId: this.eventId,
+        beerId: beerId,
+        rateTaste: this.rateTaste,
+        rateLook: this.rateLook,
+        rateCraft: this.rateCraft,
+        ratePower: this.ratePower,
+        timestamp:  firebase.firestore.FieldValue.serverTimestamp(),
+      }).then(() => {
+        this.showBeer++;
+        this.rateTaste = 0;
+        this.rateLook = 0;
+        this.rateCraft = 0;
+        this.ratePower = 0;
+      })
+    } else {
+      alert('Please fill all reviews');
     }
+  }
+
+  goToPage(page) {
+    this.help.nav(page);
+  }
+  
+  deactiveEvent() {
+      this.fs.collection('events').doc(this.eventId).update({
+        active: false
+      }).then(() => {
+        this.help.nav('meetings');
+      }).catch((error) => {
+    });
   }
 }

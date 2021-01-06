@@ -38,14 +38,14 @@
     </div>
     <div *ngIf="eventStarted === true">
       <hr>
-      <ion-slides>
-        <ion-slide *ngFor="let item of beers | async; let i = index" class="d-block">
+        <div *ngFor="let item of beers | async; let i = index" class="d-block">
+         <div *ngIf="i === showBeer" class="pb-5">
           <h5>{{ item.name }}</h5>
           <div class="beer-desc">
-            <div>
+            <div style="width: 30%;">
               <img [src]="item.photo" alt="">
             </div>
-            <div>
+            <div style="width: 70%;">
               <ion-list>
                 <ion-item>
                   <ion-label>Alcohol: <strong>{{ item.percent }}%</strong></ion-label>
@@ -254,8 +254,33 @@
               <ion-icon color="primary" name="star" (click)="onRatePower(5)"></ion-icon>
             </div>
           </div>
-        </ion-slide>
-      </ion-slides>
+          <br>
+          <ion-button (click)="anotherBeer(item.id, showBeer)">
+            Another beer
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+
+      <div *ngIf="showBeer >= countBeers">
+        <div *ngIf="owner == userId">
+          Thanks for voting
+          <div>
+            <ion-button (click)="deactiveEvent()">
+              Deactive event 
+            </ion-button>
+          </div>
+        </div>
+        <div *ngIf="owner != userId">
+          Thanks for voting
+          <div>
+            <ion-button (click)="goToPage('hub')">
+              Go To Hub
+            </ion-button>
+          </div>
+        </div>
+      </div>
+      
     </div>
   </div>
 </ion-content>

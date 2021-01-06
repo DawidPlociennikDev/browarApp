@@ -1,11 +1,6 @@
 #container {
   text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  padding-bottom: 40px;
 }
 
 #container strong {
@@ -64,4 +59,7 @@
 ion-icon {
   margin: 0 10px;
   transform: scale(1.5);
+}
+.pb-5 {
+  padding-bottom: 30px;
 }
