@@ -45,6 +45,23 @@ export class HomePage implements OnInit {
         firebase.auth().signInWithCredential(facebookCredential)
           .then( success => {
             alert('Firebase success: ' + JSON.stringify(success));
+            this.fs.collection('users').doc(success.user.uid).set({
+              userId: success.user.uid,
+              email: success.additionalUserInfo.profile['email'],
+              firstName: success.additionalUserInfo.profile['first_name'],
+              lastName: success.additionalUserInfo.profile['last_name'],
+              avatar: success.additionalUserInfo.profile['picture'].data.url,
+              timestamp:  firebase.firestore.FieldValue.serverTimestamp(),
+              status: this.status,
+            }).then(() => {
+              localStorage.setItem('userId', success.user.uid);
+              localStorage.setItem('email', success.additionalUserInfo.profile['email']);
+              localStorage.setItem('firstName', success.additionalUserInfo.profile['first_name']);
+              localStorage.setItem('lastName', success.additionalUserInfo.profile['last_name']);
+              localStorage.setItem('avatar', success.additionalUserInfo.profile['picture'].data.url);
+              this.help.dismissLoading();
+              this.help.nav('hub');
+            })
           });
       }).catch((error) => {
         alert( JSON.stringify(error));
