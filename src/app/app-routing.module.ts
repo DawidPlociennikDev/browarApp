@@ -51,6 +51,10 @@ const routes: Routes = [
     path: 'users-list',
     loadChildren: () => import('./modal/users-list/users-list.module').then( m => m.UsersListPageModule)
   },
+  {
+    path: 'statistics',
+    loadChildren: () => import('./statistics/statistics.module').then( m => m.StatisticsPageModule)
+  },
 ];
 
 @NgModule({

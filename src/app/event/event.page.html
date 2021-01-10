@@ -52,7 +52,7 @@
                 </ion-item>
                 <ion-item>
                   <ion-label>Blg: <strong>{{ item.blg }}°</strong>
-                  <ion-icon class="float-right" name="help-circle-outline" (click)="blgInfo()"></ion-icon>
+                  <ion-icon class="float-right" name="help-circle-outline" (click)="blgInfo($event)"></ion-icon>
                   </ion-label>
                 </ion-item>
                 <ion-item>
@@ -255,7 +255,7 @@
             </div>
           </div>
           <br>
-          <ion-button (click)="anotherBeer(item.id, showBeer)">
+          <ion-button (click)="anotherBeer(item.id)">
             Another beer
             <ion-icon name="chevron-forward-outline"></ion-icon>
           </ion-button>

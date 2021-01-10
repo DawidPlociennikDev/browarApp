@@ -1,0 +1,69 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      BrowarApp
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="container">
+    <ion-slides>
+      <ion-slide *ngFor="let item of beers | async; let i = index" class="d-block">
+        <div>
+          <h5>{{ item.name }}</h5>
+          <div class="arrow arrow-right">
+            <ion-icon name="chevron-forward-outline"></ion-icon>
+          </div>
+          <div class="beer-desc">
+            <div style="width: 30%;">
+              <img [src]="item.photo" alt="">
+            </div>
+            <div style="width: 70%;">
+              <ion-list>
+                <ion-item>
+                  <ion-label>Alcohol: <strong>{{ item.percent }}%</strong></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Blg: <strong>{{ item.blg }}°</strong>
+                    <ion-icon class="float-right" name="help-circle-outline" (click)="blgInfo($event)"></ion-icon>
+                  </ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Country: <strong>{{ item.country }}</strong></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Manufacturer: <strong>{{ item.manufacture }}</strong></ion-label>
+                </ion-item>
+                <ion-item>
+                  <ion-label>Barcode: <strong>{{ item.barcode }}</strong></ion-label>
+                </ion-item>
+              </ion-list>
+              <ion-item>
+                <ion-label>{{ item.description }}</ion-label>
+              </ion-item>
+            </div>
+          </div>
+          <div class="rate-component">
+            SMAK: {{ rateTaste[item.id] }} / 5
+          </div>
+          <div class="rate-component">
+            WYGLĄD: {{ rateLook[item.id] }} / 5
+          </div>
+          <div class="rate-component">
+            KUNSZT: {{ rateCraft[item.id] }} / 5
+          </div>
+          <div class="rate-component">
+            MOC: {{ ratePower[item.id] }} / 5
+          </div>
+          <div class="arrow arrow-left">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+          </div>
+        </div>
+      </ion-slide>
+    </ion-slides>
+  </div>
+</ion-content>
